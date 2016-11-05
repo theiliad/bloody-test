@@ -1,18 +1,26 @@
 var variables = [];
 var variableNames = ["Sodium", "Potassium", "Chloride", "Carbon Dioxide", "Calcium", "Protein", "Albumin", "Globulin", "A/G Ratio", "Bilirubin", "Alkaline", "AST", "ALT", "Creatine"];
 
+var PROGRESS_STEPS = ["Downloading the Image",
+                      "Extracting your results data",
+                      "Analyzing the Data"];
+
 angular.module('dangerZone')
         .config(function($mdThemingProvider) {
           $mdThemingProvider.theme('default')
-            .primaryPalette('deep-orange')
+            .primaryPalette('red')
             .accentPalette('indigo');
         })
 
         .controller("dangerZoneCtrl", function($rootScope, $scope, $mdSidenav, $mdToast, $state, $http) {
+            $scope.PROGRESS_STEPS = PROGRESS_STEPS;
+            console.log(PROGRESS_STEPS);
+            
             $scope.analyze = function(url) {
                 $scope.getBase64FromImageUrl(url);
                 
                 $scope.progress = true;
+                $scope.progressIndex = 0;
             }
             
             $scope.getBase64FromImageUrl = function(url) {
@@ -20,7 +28,9 @@ angular.module('dangerZone')
 
                 img.setAttribute('crossOrigin', 'anonymous');
 
-                img.onload = function () {                    
+                img.onload = function () {
+                    $scope.progressIndex = 1;
+                    
                     var canvas = document.createElement("canvas");
                     canvas.width =this.width;
                     canvas.height =this.height;
@@ -49,6 +59,8 @@ angular.module('dangerZone')
                                 });
                     $http.post('https://vision.googleapis.com/v1/images:annotate?key= AIzaSyBMSx7JI7HlEnGLKUJ0goYuJhbJq1kWHYg', parameter).
                     success(function(data, status, headers, config) {
+                        $scope.progressIndex = 2;
+                        
                         // this callback will be called asynchronously
                         // when the response is available
                         console.log(data.responses[0].textAnnotations[0].description.split('\n'));

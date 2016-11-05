@@ -48,13 +48,22 @@
             {{message}}
         </div>
         
-        <form name="signInForm" style="display: table; margin-top: 20px;">
-            <input ng-model="picURL" type="url" placeholder="Image URL" required>
-            <md-button class="md-raised" ng-disabled="signInForm.$invalid" ng-class="{'button-disabled': signInForm.$invalid}" ng-click="analyze(picURL)">Analyze</md-button>
+        <form name="signInForm" style="margin-top: 20px;" class="flex-container">
+            <input ng-model="picURL" type="url" placeholder="Image URL" class="flex-item" required>
+            <md-button class="md-raised flex-item" ng-disabled="signInForm.$invalid" ng-class="{'button-disabled': signInForm.$invalid}" ng-click="analyze(picURL)">
+                <md-icon class="mdi mdi-auto-fix mdi-18px"></md-icon>
+                Analyze
+            </md-button>
+            <md-button class="md-raised flex-item" ng-disabled="true" ng-class="{'button-disabled': true}">
+                <md-icon class="mdi mdi-camera mdi-18px"></md-icon>
+            </md-button>
         </form>
         
-        <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" ng-hide="!progress" style="margin: 0; margin-top: 20px; padding: 10px 15px;" md-theme-watch>
-            <md-progress-circular md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+        <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" ng-hide="!progress" style="display: table; width: 100%; margin: 0; margin-top: 20px; padding: 10px 20px; text-align: left;" md-theme-watch>
+            <p class="noSpace">
+                <md-progress-circular md-mode="indeterminate" md-diameter="30" style="float: left;"></md-progress-circular>
+                <span style="font-weight: bold; margin-left: 30px;">{{progressIndex+1}}/{{PROGRESS_STEPS.length}}</span> {{PROGRESS_STEPS[progressIndex]}}
+            </p>
         </md-card>
     </div>
     

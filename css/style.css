@@ -67,6 +67,10 @@ div#home-intro p {
     padding-left: 80px;
 }
 
+div#home-intro p.noSpace {
+    padding-left: 0px;
+}
+
 div#home-intro input {
     padding: 10px 15px;
     border-radius: 3px;
@@ -81,15 +85,11 @@ div#home-intro input {
     transition: all .1s ease-in;
 }
 
-div#home-intro input[type=url] {
-    width: 500px;
-}
-
 div#home-intro .md-raised {
     color: #d92e2e;
     background: #fff;
     padding: 1px 30px;
-    margin-top: 2px;
+    margin-top: 0px;
     margin-left: 15px;
     font-weight: 700;
 }
@@ -241,6 +241,66 @@ h2 small {
 
 .debug {
     border: 1px solid red;
+}
+
+.flex-container {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: justify;
+    justify-content: space-around;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+
+.flex-item:nth-child(1) {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 2 1 auto;
+    -ms-flex: 2 1 auto;
+    flex: 2 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+}
+
+.flex-item:nth-child(2) {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    margin-top: -2px;
+}
+
+.flex-item:nth-child(3) {
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    margin-top: -2px;
+    margin-left: 0 !important;
 }
 
 
