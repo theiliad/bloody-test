@@ -41,7 +41,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-size: 100px;
-    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
 strong {
@@ -50,6 +50,10 @@ strong {
 
 .clearfix {
     clear: both;
+}
+
+.mdi:before {
+    color: #e54b4b;
 }
 
 div.center {
@@ -239,6 +243,16 @@ h2 small {
     font-weight: 300;
 }
 
+.green,
+.green:before {
+    color: green;
+}
+
+.red,
+.red:before {
+    color: red;
+}
+
 .debug {
     border: 1px solid red;
 }
@@ -304,7 +318,8 @@ h2 small {
 }
 
 
-/* === Angular === */
+ === Angular === 
+/*
 [ui-view].ng-enter, [ui-view].ng-leave {
   -webkit-transition:all .15s ease-in-out;
   -moz-transition:all .15s ease-in-out;
@@ -314,31 +329,32 @@ h2 small {
 
 [ui-view].ng-enter {
   opacity: 0;
-  -webkit-transform:scale3d(0.75, 0.75, 0.75);
-  -moz-transform:scale3d(0.75, 0.75, 0.75);
-  transform:scale3d(0.75, 0.75, 0.75);
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  transform: scale(0);
 }
 
 [ui-view].ng-enter-active {
   opacity: 1;
-  -webkit-transform:scale3d(1, 1, 1);
-  -moz-transform:scale3d(1, 1, 1);
-  transform:scale3d(1, 1, 1);
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  transform: scale(1);
 }
 
 [ui-view].ng-leave {
   opacity: 1; 
-  -webkit-transform:scale3d(0.75, 0.75, 0.75);
-  -moz-transform:scale3d(0.75, 0.75, 0.75);
-  transform:scale3d(0.75, 0.75, 0.75);
+  -webkit-transform: scale(1);
+  -moz-transform:scale3d(1);
+  transform:scale3d(1);
 }
 
 [ui-view].ng-leave-active {
   opacity: 0;
-  -webkit-transform:scale3d(0.75, 0.75, 0.75);
-  -moz-transform:scale3d(0.75, 0.75, 0.75);
-  transform:scale3d(0.75, 0.75, 0.75);
+  -webkit-transform:scale(0);
+  -moz-transform:scale(0);
+  transform:scale(0);
 }
+*/
 
 
 
@@ -367,6 +383,13 @@ md-icon {
     font-size: 25px !important;
     margin-top: -12px !important;
     margin-left: 9px !important;
+    font-weight: 200 !important;
+}
+
+.mdi-25px-fix {
+    font-size: 25px !important;
+    margin-top: 12px !important;
+    margin-left: -5px !important;
     font-weight: 200 !important;
 }
 
@@ -452,6 +475,26 @@ table thead tr th md-icon {
 
 }
 
+
+
+/* === Animations === */
+/*
+.appear {
+    height: 0;
+    opacity: 0;
+    transform: translateY(200px) scaleX(0) scaleY(0.5);
+}
+
+.appear-after {
+    height: auto;
+    opacity: 1;
+    transform: translateY(0) scaleX(1) scaleY(1);
+-webkit-transition: all 500ms cubic-bezier(1.000, 0.000, 0.000, 1.000); 
+   -moz-transition: all 500ms cubic-bezier(1.000, 0.000, 0.000, 1.000); 
+     -o-transition: all 500ms cubic-bezier(1.000, 0.000, 0.000, 1.000); 
+        transition: all 500ms cubic-bezier(1.000, 0.000, 0.000, 1.000);
+}
+*/
 
 
 /* === Responsive Flexbox Grids === */
