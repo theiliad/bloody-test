@@ -21,7 +21,7 @@
     <![endif]-->
 </head>
 <body ng-app="dangerZone" ng-controller="dangerZoneCtrl" ng-init="picURL = 'http://www.doghouseboxing.com/Media/ReM_Donaire_Blood_2.jpg'">
-    <div class="center" id="home-intro">
+    <div class="center" id="home-intro" ng-init="progress = false">
         <h1>Bloody Test</h1>
         <div style="display: table; margin-top: 20px;">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -53,8 +53,8 @@
             <md-button class="md-raised" ng-disabled="signInForm.$invalid" ng-class="{'button-disabled': signInForm.$invalid}" ng-click="analyze(picURL)">Analyze</md-button>
         </form>
         
-        <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-            <md-progress-circular md-mode="indeterminate" ng-hide="imageLoaded"></md-progress-circular>
+        <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" ng-hide="!progress" style="margin: 0; margin-top: 20px; padding: 10px 15px;" md-theme-watch>
+            <md-progress-circular md-mode="indeterminate" md-diameter="30"></md-progress-circular>
         </md-card>
     </div>
     

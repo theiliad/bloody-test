@@ -11,6 +11,8 @@ angular.module('dangerZone')
         .controller("dangerZoneCtrl", function($rootScope, $scope, $mdSidenav, $mdToast, $state, $http) {
             $scope.analyze = function(url) {
                 $scope.getBase64FromImageUrl(url);
+                
+                $scope.progress = true;
             }
             
             $scope.getBase64FromImageUrl = function(url) {
@@ -18,9 +20,7 @@ angular.module('dangerZone')
 
                 img.setAttribute('crossOrigin', 'anonymous');
 
-                img.onload = function () {
-                    $scope.imageLoaded = true;
-                    
+                img.onload = function () {                    
                     var canvas = document.createElement("canvas");
                     canvas.width =this.width;
                     canvas.height =this.height;
@@ -67,22 +67,36 @@ angular.module('dangerZone')
             $scope.getVariables = function(data) {
                 for (var i = 0; i < data.length; i++) {
                     for (var k = 0; k < variableNames.length; k++) {
-                        if (data[i].toLowerCase().indexOf(variableNames[k].toLowerCase()) != -1) {
-                            for (var j = i; j < data.length; j++) {
-                                if (!isNaN(data[j])) {
-                                    variables[variableNames[k]] = data[j];
+                        var variableToCheckFor = variableNames[k];
+                        
+                        if (variableNames[k] != "ALT" && variableNames[k] != "AST") {
+                            variableToCheckFor = variableNames[k].toLowerCase();
+                            
+                            if (data[i].toLowerCase().indexOf(variableToCheckFor) != -1) {
+                                for (var j = i; j < data.length; j++) {
+                                    if (!isNaN(data[j])) {
+                                        variables[variableNames[k]] = data[j];
 
-                                    break;
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            if (data[i].indexOf(variableToCheckFor) != -1) {
+                                for (var j = i; j < data.length; j++) {
+                                    if (!isNaN(data[j])) {
+                                        variables[variableNames[k]] = data[j];
+
+                                        break;
+                                    }
                                 }
                             }
                         }
+                        
+                        
                     }
                 }
                 
                 console.log(variables);
-                
-                for (var i = 0; i < variableNames.length; i++) {
-                    console.log(data.inde);
-                }
             }
         });
