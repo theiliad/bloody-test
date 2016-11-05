@@ -20,7 +20,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flexibility/1.0.6/flexibility.js"></script>
     <![endif]-->
 </head>
-<body ng-app="dangerZone" ng-controller="dangerZoneCtrl">
+<body ng-app="dangerZone" ng-controller="dangerZoneCtrl" ng-init="picURL = 'http://www.doghouseboxing.com/Media/ReM_Donaire_Blood_2.jpg'">
     <div class="center" id="home-intro">
         <h1>Bloody Test</h1>
         <div style="display: table; margin-top: 20px;">
@@ -44,12 +44,18 @@
             </svg>
             
             <p class="alignLeft">Don’t you just hate it when you get your blood test results back and you can’t understand a thing?</p>
+            
+            {{message}}
         </div>
         
         <form name="signInForm" style="display: table; margin-top: 20px;">
             <input ng-model="picURL" type="url" placeholder="Image URL" required>
             <md-button class="md-raised" ng-disabled="signInForm.$invalid" ng-class="{'button-disabled': signInForm.$invalid}" ng-click="analyze(picURL)">Analyze</md-button>
         </form>
+        
+        <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+            <md-progress-circular md-mode="indeterminate" ng-hide="imageLoaded"></md-progress-circular>
+        </md-card>
     </div>
     
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
