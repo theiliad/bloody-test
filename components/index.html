@@ -24,15 +24,13 @@
         </div>
         
         <form name="signInForm" style="margin-top: 20px;" class="flex-container appear">
-            <input ng-model="picURL" type="url" placeholder="Image URL" class="flex-item" required>
-            <md-button class="md-raised flex-item" ng-disabled="signInForm.$invalid" ng-class="{'button-disabled': signInForm.$invalid}" ng-click="analyze(picURL)">
+            <input type="file" class="flex-item" id="take-picture" ng-model="files" onchange="angular.element(this).scope().changed(event)" style="background: #fff; color: #000;" accept="image/*">
+            
+            <md-button class="md-raised flex-item" ng-disabled="signInForm.$invalid" ng-class="{'button-disabled': signInForm.$invalid}"  onclick="event.preventDefault()" ng-click="analyze()">
                 <md-icon class="mdi mdi-auto-fix mdi-18px"></md-icon>
                 Analyze
             </md-button>
-            <md-button class="md-raised flex-item" ng-disabled="true" ng-class="{'button-disabled': true}">
-                <md-icon class="mdi mdi-camera mdi-18px"></md-icon>
-            </md-button>
-        </form>
+        </form>        
         
         <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" ng-hide="!progress" style="display: table; width: 100%; margin: 0; margin-top: 20px; padding: 10px 20px; text-align: left;" md-theme-watch>
             <p class="noSpace">
