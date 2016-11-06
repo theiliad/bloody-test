@@ -465,29 +465,58 @@ table thead tr th md-icon {
 
 
 /* === Media Queries === */
+@media (max-width: 521px) {
+    h1 {
+        font-size: 60px;
+    }
+    
+    svg.svgLogo {
+        width: 30px !important;
+        padding-top: 15px;
+    }
+    
+    div#home-intro p {
+        font-size: 17px;
+        padding-left: 45px;
+    }
+    
+    .flex-container {
+        display: table !important;
+    }
+    
+    #take-picture {
+        width: 100%;
+    }
+}
 
 /* extra-small */
 @media (max-width: 767px) {
-
+    div.center {
+        width: 90%;
+    }
 }
 
 @media (min-width: 768px) {
-
+    
 }
 
 /* small */
 @media (min-width: 768px) and (max-width: 991px) {
-
+    div.center {
+        width: 70%;
+    }
 }
 
 /* med */
 @media (min-width: 992px) and (max-width: 1199px) {
-
+    div.center {
+        width: 60%;
+    }
 }
 
 /* large */
 @media (min-width: 1200px) {
-
+    
 }
 
 
