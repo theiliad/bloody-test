@@ -225,60 +225,102 @@ angular.module('dangerZone')
         
         .controller("indexCtrl", function($rootScope, $scope, $mdSidenav, $mdToast, $state, $http) {
             $scope.PROGRESS_STEPS = PROGRESS_STEPS;
-            
+    
             $scope.changed = function(evt) {
                 $scope.files = evt.target.files;
             }
             
-            $scope.analyze = function() {                
-                $scope.progress = true;
-                $scope.progressIndex = 0;
+            $scope.analyze = function() {
+                console.log((typeof $scope.files === 'undefined') != true);
                 
-                console.log($scope.files);
-                
-                var files = $scope.files;
-                var file = files[0];
+                if ((typeof $scope.files === 'undefined') != true) {
+                    $scope.progress = true;
+                    $scope.progressIndex = 0;
+                    
+                    var files = $scope.files;
+                    var file = files[0];
 
-                if (files && file) {
-                    var reader = new FileReader();
+                    if (files && file) {
+                        var reader = new FileReader();
 
-                    reader.onload = function(readerEvt) {
-                        $scope.progressIndex = 1;
-                        var binaryString = readerEvt.target.result;
-//                            document.getElementById("base64textarea").value = btoa(binaryString);
+                        reader.onload = function(readerEvt) {
+                            $scope.progressIndex = 1;
+                            var binaryString = readerEvt.target.result;
 
-                        var parameter = JSON.stringify({
-                             "requests": [
-                              {
-                               "features": [
-                                {
-                                 "type": "TEXT_DETECTION"
-                                }
-                               ],
-                               "image": {
-                                 "content": btoa(binaryString)
-                               }
-                              }
-                             ]
-                            });
+                            var parameter = JSON.stringify({
+                                 "requests": [
+                                  {
+                                   "features": [
+                                    {
+                                     "type": "TEXT_DETECTION"
+                                    }
+                                   ],
+                                   "image": {
+                                     "content": btoa(binaryString)
+                                   }
+                                  }
+                                 ]
+                                });
 
-                        $http.post('https://vision.googleapis.com/v1/images:annotate?key= AIzaSyBMSx7JI7HlEnGLKUJ0goYuJhbJq1kWHYg', parameter).
-                        success(function(data, status, headers, config) {
-                            $scope.progressIndex = 2;
+                            $http.post('https://vision.googleapis.com/v1/images:annotate?key= AIzaSyBMSx7JI7HlEnGLKUJ0goYuJhbJq1kWHYg', parameter).
+                            success(function(data, status, headers, config) {
+                                $scope.progressIndex = 2;
 
-                            // this callback will be called asynchronously
-                            // when the response is available
-                            console.log(data.responses[0].textAnnotations[0].description.split('\n'));
+                                // this callback will be called asynchronously
+                                // when the response is available
+                                console.log(data.responses[0].textAnnotations[0].description.split('\n'));
 
-                            $scope.getVariables(data.responses[0].textAnnotations[0].description.split('\n'));
-                          })
-                            .error(function(data, status, headers, config) {
-                            // called asynchronously if an error occurs
-                            // or server returns response with an error status.
-                          });
+                                $scope.getVariables(data.responses[0].textAnnotations[0].description.split('\n'));
+                              })
+                                .error(function(data, status, headers, config) {
+                                // called asynchronously if an error occurs
+                                // or server returns response with an error status.
+                              });
+                        };
+
+                        reader.readAsBinaryString(file);
+                    }
+                } else {
+                    var last = {
+                      bottom: true,
+                      top: false,
+                      left: false,
+                      right: true
                     };
 
-                    reader.readAsBinaryString(file);
+                  $scope.toastPosition = angular.extend({},last);
+
+                  $scope.getToastPosition = function() {
+                    sanitizePosition();
+
+                    return Object.keys($scope.toastPosition)
+                      .filter(function(pos) { return $scope.toastPosition[pos]; })
+                      .join(' ');
+                  };
+
+                  function sanitizePosition() {
+                    var current = $scope.toastPosition;
+
+                    if ( current.bottom && last.top ) current.top = false;
+                    if ( current.top && last.bottom ) current.bottom = false;
+                    if ( current.right && last.left ) current.left = false;
+                    if ( current.left && last.right ) current.right = false;
+
+                    last = angular.extend({},current);
+                  }
+
+                  $scope.showSimpleToast = function() {
+                    var pinTo = $scope.getToastPosition();
+
+                    $mdToast.show(
+                      $mdToast.simple()
+                        .textContent('Please Choose a file!')
+                        .position(pinTo)
+                        .hideDelay(3000)
+                    );
+                  };
+                  
+                  $scope.showSimpleToast();
                 }
             }
             
