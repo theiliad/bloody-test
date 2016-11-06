@@ -66,6 +66,10 @@ div.center {
     text-align: center;
 }
 
+div#results {
+    width: 75% !important;
+}
+
 div#home-intro p {
     font-size: 19px;
     padding-left: 80px;

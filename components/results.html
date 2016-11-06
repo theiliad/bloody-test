@@ -1,18 +1,17 @@
-    <div class="center" id="home-intro">
+    <div class="center" id="home-intro results">        
         <md-card style="display: table; width: 100%; margin: 0; margin-top: 20px; padding: 10px 20px; text-align: left;" md-theme-watch>
             <md-list>
-                <md-list-item>
-                    <md-icon class="mdi mdi-check mdi-25px-fix mdi-space green" style="margin-right: 15px;"></md-icon>
-                    <p class="noSpace"> Calcium Levels: <strong class="green">Healthy</strong> </p>
-                    <md-icon class="mdi mdi-information mdi-25px mdi-space" style="margin-top: 12px !important;"></md-icon>
+                <md-list-item ng-repeat="object in statusesObj">
+                    <md-icon class="mdi mdi-25px-fix mdi-space"
+                             ng-class="{'green': object.status == 'OK', 'mdi-check': object.status == 'OK', 'red': object.status != 'OK', 'mdi-flag': object.status != 'OK'}"
+                             style="margin-right: 15px;"></md-icon>
+                    <p class="noSpace"> {{object.name}} Levels: <strong ng-class="{'green': object.status == 'OK', 'red': object.status != 'OK'}">{{object.status}}
+                        <small ng-if="object.status == 'HIGH'"><br />{{db[0][object.name].highMsg}}</small>
+                        <small ng-if="object.status == 'LOW'"><br />{{db[0][object.name].lowMsg}}</small>
+                        </strong> </p>
+                    <md-icon class="mdi mdi-information mdi-25px mdi-space" style="margin-top: 12px !important;"
+                             ng-click="infoDialog(object.name)"></md-icon>
                 </md-list-item>
             </md-list>
-        </md-card>
-        
-        <md-card style="display: table; width: 100%; margin: 0; margin-top: 20px; padding: 10px 20px; text-align: left;" md-theme-watch>
-            <p class="noSpace">
-                <md-icon class="mdi mdi-flag mdi-25px mdi-space red"></md-icon>
-                Potassium Levels: <strong class="red">Low</strong>
-            </p>
         </md-card>
     </div>

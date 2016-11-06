@@ -1,5 +1,6 @@
 var variables = [];
 var variableNames = ["ALT", "Albumin", "A/G Ratio", "Alkaline", "AST", "Bilirubin", "BUN", "BUN/creatinine ratio", "Calcium", "Chloride", "Creatinine", "Fasting glucose", "Phosphorus", "Potassium", "Sodium", "Total cholesterol", "Triglycerides", "HDL", "Carbon Dioxide"];
+var statuses = [];
 
 var db = [
             {
@@ -195,7 +196,11 @@ angular.module('dangerZone')
           
           .state('results', {
             url: '/results',
-            templateUrl: 'components/results.html'
+            templateUrl: 'components/results.html',
+            controller: 'resultsCtrl',
+            params: {
+                statusesObject: null
+            }
           })
 
           $urlRouterProvider.otherwise('/index');
@@ -206,6 +211,12 @@ angular.module('dangerZone')
               if (to.redirectTo) {
                 evt.preventDefault();
                 $state.go(to.redirectTo, params, {location: 'replace'})
+              }
+                
+              if (to.url == '/results') {
+                  console.log(params);
+                  
+                  alert("wadup");
               }
             });
         }])
@@ -222,8 +233,6 @@ angular.module('dangerZone')
                 
                 $scope.progress = true;
                 $scope.progressIndex = 0;
-                
-//                $state.go('results');
             }
             
             $scope.getBase64FromImageUrl = function(url) {
@@ -281,16 +290,16 @@ angular.module('dangerZone')
             
             $scope.getVariables = function(data) {
                 for (var i = 0; i < data.length; i++) {
-                    for (var k = 0; k < db.length; k++) {
-                        var variableToCheckFor = db[k].name;
+                    for (var k = 0; k < variableNames.length; k++) {
+                        var variableToCheckFor = variableNames[k];
                         
-                        if (db[k].name != "ALT" && db[k].name != "AST") {
-                            variableToCheckFor = db[k].name.toLowerCase();
+                        if (variableNames[k] != "ALT" && variableNames[k] != "AST") {
+                            variableToCheckFor = variableNames[k].toLowerCase();
                             
                             if (data[i].toLowerCase().indexOf(variableToCheckFor) != -1) {
                                 for (var j = i; j < data.length; j++) {
                                     if (!isNaN(data[j])) {
-                                        variables[db[k].name] = data[j];
+                                        variables[variableNames[k]] = data[j];
 
                                         break;
                                     }
@@ -300,7 +309,7 @@ angular.module('dangerZone')
                             if (data[i].indexOf(variableToCheckFor) != -1) {
                                 for (var j = i; j < data.length; j++) {
                                     if (!isNaN(data[j])) {
-                                        variables[db[k].name] = data[j];
+                                        variables[variableNames[k]] = data[j];
 
                                         break;
                                     }
@@ -317,12 +326,56 @@ angular.module('dangerZone')
                 $scope.analyzeData();
             }
             
-            $scope.analyzeData = function() {                
+            $scope.analyzeData = function() {
+                var counter = 0;
                 for (var variable in variables) {
-                    console.log(variable);
-                    console.log(db[0][variable]);
+                    if (variable != "Creatinine" &&  variable != "A/G Ratio" && variable != "BUN/creatinine ratio") {
+                        console.log(variables[variable]);
+                        console.log(variable + " " + db[0][variable].low + " " + db[0][variable].high);
+                        
+                        if (variables[variable] < db[0][variable].low) {
+                            console.error("LOOOOOW");
+                            statuses[counter] = {"name": variable, "status": "LOW"};
+                        } else if (variables[variable] > db[0][variable].high) {
+                            console.error("HIGHHHH");
+                            statuses[counter] = {"name": variable, "status": "HIGH"};
+                        } else {
+                            statuses[counter] = {"name": variable, "status": "OK"};
+                        }
+                        
+                        counter = counter + 1;
+                    }
                 }
+                
+                console.log(statuses);
+                
+                $state.go('results', {statusesObject:statuses});
             }
+        })
+        
+        .controller("resultsCtrl", function($rootScope, $scope, $mdSidenav, $mdToast, $state, $stateParams, $http, $mdDialog) {
+            $scope.db = db;
+            console.log("statusesObject");
+            console.log($stateParams.statusesObject);
+            $scope.statusesObj = $stateParams.statusesObject;
+            console.log($scope.statusesObj);
+            
+            $scope.infoDialog = function(name) {                
+                $mdDialog.show({
+                  controller: ['$scope', function ($scope) {
+                      $scope.closeDialog = function() {
+                          $mdDialog.hide();
+                      };
+                      
+                      $scope.item = db[0][name];
+                      $scope.name = name;
+                  }],
+                  templateUrl: 'components/infoDialog.html',
+                  parent: angular.element(document.body),
+                  clickOutsideToClose: true,
+                  fullscreen: false
+                });
+            };
         });
 
 //var appearElements = document.querySelectorAll('.appear');
