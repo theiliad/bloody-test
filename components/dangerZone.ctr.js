@@ -231,62 +231,14 @@ angular.module('dangerZone')
             }
             
             $scope.analyze = function() {
-                console.log((typeof $scope.files === 'undefined') != true);
+//                console.log($scope.files.length);
                 
-                if ((typeof $scope.files === 'undefined') != true) {
-                    $scope.progress = true;
-                    $scope.progressIndex = 0;
-                    
-                    var files = $scope.files;
-                    var file = files[0];
-
-                    if (files && file) {
-                        var reader = new FileReader();
-
-                        reader.onload = function(readerEvt) {
-                            $scope.progressIndex = 1;
-                            var binaryString = readerEvt.target.result;
-
-                            var parameter = JSON.stringify({
-                                 "requests": [
-                                  {
-                                   "features": [
-                                    {
-                                     "type": "TEXT_DETECTION"
-                                    }
-                                   ],
-                                   "image": {
-                                     "content": btoa(binaryString)
-                                   }
-                                  }
-                                 ]
-                                });
-
-                            $http.post('https://vision.googleapis.com/v1/images:annotate?key= AIzaSyBMSx7JI7HlEnGLKUJ0goYuJhbJq1kWHYg', parameter).
-                            success(function(data, status, headers, config) {
-                                $scope.progressIndex = 2;
-
-                                // this callback will be called asynchronously
-                                // when the response is available
-                                console.log(data.responses[0].textAnnotations[0].description.split('\n'));
-
-                                $scope.getVariables(data.responses[0].textAnnotations[0].description.split('\n'));
-                              })
-                                .error(function(data, status, headers, config) {
-                                // called asynchronously if an error occurs
-                                // or server returns response with an error status.
-                              });
-                        };
-
-                        reader.readAsBinaryString(file);
-                    }
-                } else {
-                    var last = {
-                      bottom: true,
-                      top: false,
-                      left: false,
-                      right: true
-                    };
+                  var last = {
+                    bottom: true,
+                    top: false,
+                    left: false,
+                    right: true
+                  };
 
                   $scope.toastPosition = angular.extend({},last);
 
@@ -309,18 +261,70 @@ angular.module('dangerZone')
                     last = angular.extend({},current);
                   }
 
-                  $scope.showSimpleToast = function() {
+                  $scope.showSimpleToast = function(message) {
                     var pinTo = $scope.getToastPosition();
 
                     $mdToast.show(
                       $mdToast.simple()
-                        .textContent('Please Choose a file!')
+                        .textContent(message)
                         .position(pinTo)
                         .hideDelay(3000)
                     );
                   };
-                  
-                  $scope.showSimpleToast();
+                
+                if ((typeof $scope.files === 'undefined') != true) {
+                    if ($scope.files.length > 0) {
+                        $scope.progress = true;
+                        $scope.progressIndex = 0;
+
+                        var files = $scope.files;
+                        var file = files[0];
+
+                        if (files && file) {
+                            var reader = new FileReader();
+
+                            reader.onload = function(readerEvt) {
+                                $scope.progressIndex = 1;
+                                var binaryString = readerEvt.target.result;
+
+                                var parameter = JSON.stringify({
+                                     "requests": [
+                                      {
+                                       "features": [
+                                        {
+                                         "type": "TEXT_DETECTION"
+                                        }
+                                       ],
+                                       "image": {
+                                         "content": btoa(binaryString)
+                                       }
+                                      }
+                                     ]
+                                    });
+
+                                $http.post('https://vision.googleapis.com/v1/images:annotate?key= AIzaSyBMSx7JI7HlEnGLKUJ0goYuJhbJq1kWHYg', parameter).
+                                success(function(data, status, headers, config) {
+                                    $scope.progressIndex = 2;
+
+                                    // this callback will be called asynchronously
+                                    // when the response is available
+                                    console.log(data.responses[0].textAnnotations[0].description.split('\n'));
+
+                                    $scope.getVariables(data.responses[0].textAnnotations[0].description.split('\n'));
+                                  })
+                                    .error(function(data, status, headers, config) {
+                                    // called asynchronously if an error occurs
+                                    // or server returns response with an error status.
+                                  });
+                            };
+
+                            reader.readAsBinaryString(file);
+                        }
+                    } else {
+                        $scope.showSimpleToast('Please Choose a file!');
+                    }
+                } else {                  
+                  $scope.showSimpleToast('Please Choose a file!');
                 }
             }
             

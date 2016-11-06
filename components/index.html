@@ -26,7 +26,7 @@
         <form name="signInForm" style="margin-top: 20px;" class="flex-container appear">
             <input type="file" class="flex-item" id="take-picture" ng-model="files" onchange="angular.element(this).scope().changed(event)" style="background: #fff; color: #000;" accept="image/*">
                                     
-            <md-button class="md-raised flex-item" ng-class="{'button-disabled': signInForm.$invalid}"  onclick="event.preventDefault()" ng-disabled="files.length == 0" ng-click="analyze()">
+            <md-button class="md-raised flex-item" onclick="event.preventDefault()" ng-click="analyze()">
                 <md-icon class="mdi mdi-auto-fix mdi-18px"></md-icon>
                 Analyze
             </md-button>
